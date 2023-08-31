@@ -1,6 +1,4 @@
-install: configure clean
-
-configure:
+install:
 
 	@echo "⚙️ Configuring Wordpress parameters..."
 	wp core install \
