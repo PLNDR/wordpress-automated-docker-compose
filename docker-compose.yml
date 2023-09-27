@@ -48,15 +48,24 @@ services:
       - ${WORDPRESS_DATA_DIR}:/var/www/html:rw
 
   wp-cli:
-    image: wordpress:cli
+    build:
+      context: .
+      dockerfile: wpcli.Dockerfile
+    container_name: ${COMPOSE_PROJECT_NAME}_wpcli
     depends_on:
     - wordpress
     volumes:
       - ${WORDPRESS_DATA_DIR:-./wordpress}:/var/www/html
       - ./setup-wp.sh:/usr/local/bin/setup-wp.sh
     user: "33"
-    command: /usr/local/bin/setup-wp.sh
+    command: sh -c "/wait && /usr/local/bin/setup-wp.sh"
     environment:
+      - WAIT_HOSTS=${COMPOSE_PROJECT_NAME}_mysql:3306, ${COMPOSE_PROJECT_NAME}_wordpress:80
+      - WAIT_BEFORE=${WAIT_BEFORE:-30}
+      - WAIT_AFTER=${WAIT_AFTER:-15}
+      - WAIT_TIMEOUT=${WAIT_TIMEOUT:-300}
+      - WAIT_SLEEP_INTERVAL=${WAIT_SLEEP_INTERVAL:-30}
+      - WAIT_HOST_CONNECT_TIMEOUT=${WAIT_HOST_CONNECT_TIMEOUT:-30}
       # Wordpress configuration -----------------------------
       - WORDPRESS_LOCALE=${WORDPRESS_LOCALE}
       - WORDPRESS_THEME=${WORDPRESS_THEME}
