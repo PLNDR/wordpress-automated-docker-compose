@@ -1,4 +1,4 @@
-version: '3.6'
+version: "3.6"
 services:
   # Wordpress auto configuration
   # depends on wp-cli build
@@ -24,6 +24,8 @@ services:
       # Wordpress configuration -----------------------------
       - WORDPRESS_LOCALE=${WORDPRESS_LOCALE}
       - WORDPRESS_THEME=${WORDPRESS_THEME}
+      - WORDPRESS_CHILD_THEME=${WORDPRESS_CHILD_THEME}
+      - WORDPRESS_PLUGINS=${WORDPRESS_PLUGINS}
       - WORDPRESS_DB_NAME=${DATABASE_NAME}
       - WORDPRESS_DB_HOST=${DATABASE_HOST}
       - WORDPRESS_DB_USER=${DATABASE_USER}
