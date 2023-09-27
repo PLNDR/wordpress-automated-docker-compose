@@ -1,17 +1,6 @@
 install:
 
 	@echo "⚙️ Configuring Wordpress parameters..."
-	@if ! wp core is-installed; then \
-		wp core download; \
-	fi
-
-	@if [ ! -f wp-config.php ]; then \
-	wp config create \
-		--dbname=${DATABASE_NAME} \
-		--dbuser=${DATABASE_USER} \
-		--dbpass=${DATABASE_PASSWORD} \
-		--dbhost=${DATABASE_HOST}; \
-	fi
 
 	wp core install \
 		--url=${WORDPRESS_WEBSITE_URL_WITHOUT_HTTP} \
@@ -24,7 +13,9 @@ install:
 	wp rewrite structure $(WORDPRESS_WEBSITE_POST_URL_STRUCTURE)
 	wp language core install ${WORDPRESS_LOCALE} --activate
 	wp theme install ${WORDPRESS_THEME}
-	wp theme list
-	wp plugin list
 	wp theme activate ${WORDPRESS_CHILD_THEME}
 	wp plugin activate ${WORDPRESS_PLUGINS} --allow-root --path=/var/www/html/
+	wp theme list
+	wp plugin list
+
+	@echo "All done! Wordpress site has been installed. 🎉"
